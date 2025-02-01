@@ -11,11 +11,11 @@ export default function useTodos() {
     }
   }
 
-  async function createTodo(name) {
+  async function createTodo(name, time) {
     try {
-      console.log('送出create api', name)
       await axios.post('http://localhost:3000/api/todo',{
-        name: name
+        name,
+        time
       },{
         headers: {
           'Content-Type': 'application/json', // 設定請求標頭

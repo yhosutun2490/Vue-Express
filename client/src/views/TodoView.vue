@@ -2,63 +2,38 @@
   <div class="todo__list__container">
     <div class="header">
       <h1 class="title">Todo List</h1>
-      <button class="btn create" @click="isShowCreateModal=true">Create</button>
+      <button class="btn__create" @click="isShowCreateModal=true">Create</button>
     </div>
     <div class="todo__list__section">
       <div class="todo__item" v-for="item in todos" :key="item.id">
-        {{item.name}}
-
+        <span class="todo__name">{{item.name}}</span>
+        <button class="btn__normal">Delete</button>
+        <button class="btn__normal">Edit</button>
+        <button class="btn__normal">Detail</button>
       </div>
     </div>
     <createTodoModal
       :isOpen="isShowCreateModal"
       @close="isShowCreateModal = false"
-    >
-      <template #title>
-        <h3 class="modal__title">Create New Todo</h3>
-      </template>
-      <template #body>
-        <div class="modal__body">
-          <input type="text" v-model="newTodo" class="input">
-        </div>
-      </template>
-      <template #button="{close}">
-        <div class="modal__btn__wrap">
-          <button class="modal__btn add" @click=addNewTodo>Add</button>
-          <button @click="close" class="modal__btn">Close</button>
-        </div>
-      </template>
-
-    </createTodoModal>
+    />
   </div>
 </template>
 <script setup>
 import useTodos from '@/composable/useTodos';
-import { onMounted, ref } from 'vue';
-import createTodoModal from '@/components/Modal/createTodoModal.vue';
+import { onMounted, provide, ref} from 'vue';
+import createTodoModal from '@/components/Modal/CreateModal.vue';
 
 const {
   todos,
   getTodos,
   createTodo
 } = useTodos()
-onMounted(async ()=> await getTodos())
-
-const newTodo = ref('')
 const isShowCreateModal = ref(false)
 
+onMounted(async ()=> await getTodos())
+provide('createTodo',createTodo)
 
-async function addNewTodo() {
-  try {
-    if (!newTodo.value.trim()) {
-      return
-    }
-    await createTodo(newTodo.value)
-  } catch(err) {
-    console.warn('addNewTodo err',err)
-  }
 
-}
 </script>
 <style scoped >
 .todo__list__container {
@@ -77,7 +52,7 @@ async function addNewTodo() {
   align-items: center;
   padding: 1rem 2rem;
 }
-.btn {
+.btn__create {
   height: 40px;
   background: none;
   border: 2px solid white;
@@ -85,6 +60,16 @@ async function addNewTodo() {
   padding: 0.5rem 1rem;
   cursor: pointer;
   color: white;
+}
+.btn__normal {
+  width: 60px;
+  height: 30px;
+  background: rgb(243, 229, 229);
+  border: 2px solid rgb(173, 179, 248);
+  border-radius: 8px;
+  cursor: pointer;
+  color: rgb(0, 0, 0);
+  margin-left: 0.5rem;
 }
 
 .todo__list__section {
@@ -98,36 +83,13 @@ async function addNewTodo() {
   background: rgb(241, 241, 241);
   padding: 0.5rem 1rem;
   margin: 0 auto 0.8rem auto;
-}
-
-
-.modal__title {
-  width: 100%;
-  background: rgb(243, 254, 211);
-  border-top-right-radius: 8px;
-  border-top-left-radius: 8px;
-}
-.modal__body, .modal__btn__wrap,.modal__title {
-  padding: 1.25rem;
-}
-.modal__btn__wrap {
   display: flex;
-  justify-content: flex-end;
-}
-.modal__btn {
-  height: 40px;
-  background: none;
-  border: 2px solid grey;
-  border-radius: 8px;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  color: black;
-  margin-left: 1.5rem;
-  width: 80px;
+  align-items: center;
 }
 
-.input {
-  width: 100%;
-  height: 2rem;
+.todo__name {
+  margin-right: auto;
 }
+
+
 </style>

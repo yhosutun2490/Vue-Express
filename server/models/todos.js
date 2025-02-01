@@ -5,8 +5,12 @@ const todoSchema = new Schema({
         type: String,
         required: true
     },
-    type: {
+    isDone: {
         type: Boolean
+    },
+    time: {
+        type: Date,
+        required: true
     }
 })
 module.exports = mongoose.model('Todo', todoSchema)

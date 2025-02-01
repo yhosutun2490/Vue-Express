@@ -14,8 +14,13 @@ router.get('/',async (req,res,next)=>{
 router.post('/',async (req,res,next)=>{
     try {
        const newTodoContent = req.body.name
-       console.log("post body",req.body)
-       await Todo.create({name: newTodoContent})
+       const time = req.body.time
+    
+       await Todo.create({
+        name: newTodoContent,
+        time: time,
+        isDone: false
+       })
        res.send({
         message: 'create todo success'
        })

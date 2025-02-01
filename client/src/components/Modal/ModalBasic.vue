@@ -25,7 +25,7 @@ const props = defineProps({
   },
 });
 
-const emits = defineEmits(['update:isOpen']);
+const emits = defineEmits(['close']);
 
 const isVisible = ref(false);
 
