@@ -23,7 +23,8 @@ db.once('open', () => {
 
 const app = express()
 app.use(cors());
-app.use(bodyParser.urlencoded())
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(route)
 // 設定靜態資源目錄
 const clientPath = path.join(__dirname, '../client/dist');
