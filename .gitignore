@@ -1,0 +1,22 @@
+# Node modules
+client/node_modules/
+server/node_modules/
+
+# Logs
+**/*.log
+
+# Build output
+client/dist/
+server/build/
+
+# Environment variables
+client/.env
+server/.env
+
+# Editor settings
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.swp
