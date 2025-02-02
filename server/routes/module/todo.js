@@ -4,7 +4,7 @@ const Todo = require('../../models/todos') // 載入 Todo model
 
 router.get('/',async (req,res,next)=>{
  try {
-    const data = await Todo.find().lean()
+    const data = await Todo.find().lean().sort({ _id: 'asc' }) //根據 _id 升冪排序
     res.send(data)
  } catch(err) {
     console.log('get todo api err',err)
