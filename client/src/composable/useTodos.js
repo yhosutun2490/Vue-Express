@@ -38,7 +38,7 @@ export default function useTodos() {
 
   async function editTodo({name, isDone, time },id) {
     try {
-      await axios.patch(`http://localhost:3000/api/todo/${id}/edit`,{
+      await axios.patch(`http://localhost:3000/api/todo/${id}`,{
         name,
         isDone,
         time,
@@ -55,7 +55,7 @@ export default function useTodos() {
 
   async function removeTodo(id) {
     try {
-      await axios.delete(`http://localhost:3000/api/todo/${id}/delete`,{
+      await axios.delete(`http://localhost:3000/api/todo/${id}`,{
         headers: {
           'Content-Type': 'application/json', // 設定請求標頭
         },

@@ -21,7 +21,7 @@ router.get('/:id',async (req,res,next)=>{
    }
   })
 
-router.patch('/:id/edit',async (req,res,next)=>{
+router.patch('/:id',async (req,res,next)=>{
    try {
       const id = req.params.id
       const editContent = req.body.name 
@@ -42,7 +42,7 @@ router.patch('/:id/edit',async (req,res,next)=>{
    }
   })
 
-  router.delete('/:id/delete',async (req,res,next)=>{
+  router.delete('/:id',async (req,res,next)=>{
    try {
       const id = req.params.id
       // get todo from DB
