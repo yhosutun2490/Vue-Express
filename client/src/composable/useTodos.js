@@ -36,10 +36,28 @@ export default function useTodos() {
     }
   }
 
+  async function editTodo({name, isDone, time },id) {
+    try {
+      await axios.patch(`http://localhost:3000/api/todo/${id}/edit`,{
+        name,
+        isDone,
+        time,
+        id
+      },{
+        headers: {
+          'Content-Type': 'application/json', // 設定請求標頭
+        },
+      })
+    } catch(err) {
+       console.warn('create todos err',err)
+    }
+  }
+
   return {
     todos: readonly(todos),
     getTodos,
     getTodoById,
+    editTodo,
     createTodo
   }
 }

@@ -8,7 +8,7 @@
       <div class="todo__item" v-for="item in todos" :key="item.id">
         <span class="todo__name">{{item.name}}</span>
         <button class="btn__normal">Delete</button>
-        <button class="btn__normal">Edit</button>
+        <button class="btn__normal" @click="handleTodoEdit(item._id)">Edit</button>
         <button class="btn__normal" @click="handleTodoDetail(item._id)">Detail</button>
       </div>
     </div>
@@ -21,6 +21,11 @@
       :id="detailId"
       @close="openModal = '', detailId = ''"
     />
+    <EditTodoModal
+      :isOpen="openModal === 'edit'"
+      :id="detailId"
+      @close="openModal = '', detailId = ''"
+    />
   </div>
 </template>
 <script setup>
@@ -28,12 +33,14 @@ import useTodos from '@/composable/useTodos';
 import { onMounted, provide, ref} from 'vue';
 import createTodoModal from '@/components/Modal/CreateModal.vue';
 import DetailModal from '@/components/Modal/DetailModal.vue';
+import EditTodoModal from '@/components/Modal/EditTodoModal.vue';
 
 const {
   todos,
   getTodos,
   getTodoById,
-  createTodo
+  createTodo,
+  editTodo
 } = useTodos()
 const openModal = ref('')
 const detailId = ref('')
@@ -41,12 +48,17 @@ const detailId = ref('')
 onMounted(async ()=> await getTodos())
 provide('createTodo',createTodo)
 provide('getTodoById',getTodoById)
+provide('editTodo', editTodo)
 
 function handleTodoDetail(id) {
   detailId.value = id
   openModal.value = 'detail'
 }
 
+function handleTodoEdit(id) {
+    detailId.value = id
+  openModal.value = 'edit'
+}
 </script>
 <style scoped >
 .todo__list__container {

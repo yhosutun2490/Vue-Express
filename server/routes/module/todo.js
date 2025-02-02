@@ -20,6 +20,27 @@ router.get('/:id',async (req,res,next)=>{
       console.log('get todo by ID api err',err)
    }
   })
+
+router.patch('/:id/edit',async (req,res,next)=>{
+   try {
+      const id = req.params.id
+      const editContent = req.body.name 
+      const isDone = req.body.isDone
+      const time = req.body.time
+      // get todo from DB
+      const todo = await Todo.findById(id)
+      todo.name = editContent
+      todo.isDone = isDone
+      todo.time = time
+      await todo.save()
+      res.send({
+         data: todo,
+         message: 'update todo success'
+      })
+   } catch(err) {
+      console.log('edit todo  api err',err)
+   }
+  })
   
 
 router.post('/',async (req,res,next)=>{
