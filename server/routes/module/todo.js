@@ -11,6 +11,17 @@ router.get('/',async (req,res,next)=>{
  }
 })
 
+router.get('/:id',async (req,res,next)=>{
+   try {
+      const id = req.params.id
+      const data = await Todo.findById(id).lean()
+      res.send(data)
+   } catch(err) {
+      console.log('get todo by ID api err',err)
+   }
+  })
+  
+
 router.post('/',async (req,res,next)=>{
     try {
        const newTodoContent = req.body.name

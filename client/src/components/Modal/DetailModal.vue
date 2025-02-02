@@ -4,25 +4,17 @@
     @close="emits('close')"
   >
     <template #title>
-      <h3 class="modal__title">Create New Todo</h3>
+      <h3 class="modal__title">Todo Detail</h3>
     </template>
     <template #body>
       <div class="modal__body">
-
-        <div class="label">
-          <p>Title</p>
-          <input type="text" v-model="newTodo" class="input" name="todo">
-        </div>
-
-        <div class="label">
-          <p>Time</p>
-          <input type="date" v-model="time" class="input__date" name="time">
-        </div>
+        <p> Name: {{ todoDetail.name }}</p>
+        <p> isDone: {{ todoDetail.isDone }}</p>
+        <p> Time: {{ todoDetail.time }} </p>
       </div>
     </template>
     <template #button="{close}">
       <div class="modal__btn__wrap">
-        <button class="modal__btn add" @click=addNewTodo>Add</button>
         <button @click="close" class="modal__btn">Close</button>
       </div>
     </template>
@@ -30,34 +22,42 @@
 </template>
 <script setup>
 import ModalBasic from './ModalBasic.vue';
-import { ref, inject } from 'vue';
-defineProps({
+import { ref, inject, watch } from 'vue';
+const props = defineProps({
   isOpen: {
     type: Boolean,
     default: false
+  },
+  id: {
+    type: String,
+    default: ""
   }
 })
 const emits = defineEmits(['close'])
-const newTodo = ref('')
-const time = ref('')
-const createTodo = inject('createTodo')
+const todoDetail = ref({})
+const getTodoById = inject('getTodoById')
 
-async function addNewTodo() {
+async function getTodoByUniqueId(id) {
   try {
-    if (!newTodo.value.trim() || !time.value) {
+    if (!id) {
       return
     }
-    await createTodo(newTodo.value,time.value)
+    console.log('getTodoById')
+    const data = await getTodoById(id)
+    todoDetail.value = data
   } catch(err) {
-    console.warn('addNewTodo err',err)
+    console.warn('get todo by id err',err)
   }
-
 }
+
+watch(()=>props.id,async(val)=>{
+  await getTodoByUniqueId(val)
+})
 </script>
 <style scoped>
 .modal__title {
   width: 100%;
-  background: rgb(243, 254, 211);
+  background: rgb(211, 254, 249);
   border-top-right-radius: 8px;
   border-top-left-radius: 8px;
 }

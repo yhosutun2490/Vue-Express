@@ -2,19 +2,24 @@
   <div class="todo__list__container">
     <div class="header">
       <h1 class="title">Todo List</h1>
-      <button class="btn__create" @click="isShowCreateModal=true">Create</button>
+      <button class="btn__create" @click="openModal='create'">Create</button>
     </div>
     <div class="todo__list__section">
       <div class="todo__item" v-for="item in todos" :key="item.id">
         <span class="todo__name">{{item.name}}</span>
         <button class="btn__normal">Delete</button>
         <button class="btn__normal">Edit</button>
-        <button class="btn__normal">Detail</button>
+        <button class="btn__normal" @click="handleTodoDetail(item._id)">Detail</button>
       </div>
     </div>
     <createTodoModal
-      :isOpen="isShowCreateModal"
-      @close="isShowCreateModal = false"
+      :isOpen="openModal === 'create'"
+      @close="openModal = ''"
+    />
+    <DetailModal
+      :isOpen="openModal === 'detail'"
+      :id="detailId"
+      @close="openModal = '', detailId = ''"
     />
   </div>
 </template>
@@ -22,17 +27,25 @@
 import useTodos from '@/composable/useTodos';
 import { onMounted, provide, ref} from 'vue';
 import createTodoModal from '@/components/Modal/CreateModal.vue';
+import DetailModal from '@/components/Modal/DetailModal.vue';
 
 const {
   todos,
   getTodos,
+  getTodoById,
   createTodo
 } = useTodos()
-const isShowCreateModal = ref(false)
+const openModal = ref('')
+const detailId = ref('')
 
 onMounted(async ()=> await getTodos())
 provide('createTodo',createTodo)
+provide('getTodoById',getTodoById)
 
+function handleTodoDetail(id) {
+  detailId.value = id
+  openModal.value = 'detail'
+}
 
 </script>
 <style scoped >
