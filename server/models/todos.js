@@ -6,7 +6,8 @@ const todoSchema = new Schema({
         required: true
     },
     isDone: {
-        type: Boolean
+        type: Boolean,
+        default: false
     },
     time: {
         type: Date,

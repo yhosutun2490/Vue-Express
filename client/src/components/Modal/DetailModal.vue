@@ -9,7 +9,33 @@
     <template #body>
       <div class="modal__body">
         <p> Name: {{ todoDetail.name }}</p>
-        <p> isDone: {{ todoDetail.isDone }}</p>
+        <div class="todo__isDone">
+          isDone:
+          <div>
+            <input
+              type="radio"
+              id="done"
+              v-model="todoDetail.isDone"
+              :value="true"
+              name="done"
+              :checked="todoDetail.isDone"
+              disabled
+            />
+            <label for="done">Done</label>
+           </div>
+          <div>
+            <input
+              type="radio"
+              id="pending"
+              v-model="todoDetail.isDone"
+              :value="false"
+              name="pending"
+              :checked="!todoDetail.isDone"
+              disabled
+            />
+            <label for="pending">Pending</label>
+            </div>
+        </div>
         <p> Time: {{ todoDetail.time }} </p>
       </div>
     </template>
@@ -90,5 +116,8 @@ watch(()=>props.id,async(val)=>{
 .input__date {
   width: 30%;
   height: 2rem;
+}
+.todo__isDone {
+  display: flex;
 }
 </style>
