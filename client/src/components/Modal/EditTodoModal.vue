@@ -67,7 +67,7 @@ const props = defineProps({
     default: ""
   }
 })
-const emits = defineEmits(['close'])
+const emits = defineEmits(['close','refresh'])
 const form = ref({
   name: '',
   isDone: false,
@@ -101,6 +101,8 @@ async function editTodoById(id) {
       isDone: isDone,
       time: time
     },id)
+    emits('close')
+    emits('refresh')
   } catch(err) {
     console.warn('edit todo by id err',err)
   }

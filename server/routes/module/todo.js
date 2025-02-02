@@ -41,6 +41,20 @@ router.patch('/:id/edit',async (req,res,next)=>{
       console.log('edit todo  api err',err)
    }
   })
+
+  router.delete('/:id/delete',async (req,res,next)=>{
+   try {
+      const id = req.params.id
+      // get todo from DB
+      const todo = await Todo.findById(id)
+      await Todo.deleteOne(todo)
+      res.send({
+         message: 'remove todo success'
+      })
+   } catch(err) {
+      console.log('edit todo  api err',err)
+   }
+  })
   
 
 router.post('/',async (req,res,next)=>{
@@ -63,5 +77,7 @@ router.post('/',async (req,res,next)=>{
        })
     }
 })
+
+
 
 module.exports= router

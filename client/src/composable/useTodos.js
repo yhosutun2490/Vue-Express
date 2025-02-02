@@ -53,11 +53,26 @@ export default function useTodos() {
     }
   }
 
+  async function removeTodo(id) {
+    try {
+      await axios.delete(`http://localhost:3000/api/todo/${id}/delete`,{
+        headers: {
+          'Content-Type': 'application/json', // 設定請求標頭
+        },
+
+      }
+      )
+    } catch(err) {
+       console.warn('create todos err',err)
+    }
+  }
+
   return {
     todos: readonly(todos),
     getTodos,
     getTodoById,
     editTodo,
+    removeTodo,
     createTodo
   }
 }

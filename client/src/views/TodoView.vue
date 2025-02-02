@@ -7,24 +7,26 @@
     <div class="todo__list__section">
       <div class="todo__item" v-for="item in todos" :key="item.id">
         <span class="todo__name">{{item.name}}</span>
-        <button class="btn__normal">Delete</button>
+        <button class="btn__normal" @click="handleDelete(item._id)">Delete</button>
         <button class="btn__normal" @click="handleTodoEdit(item._id)">Edit</button>
         <button class="btn__normal" @click="handleTodoDetail(item._id)">Detail</button>
       </div>
     </div>
     <createTodoModal
       :isOpen="openModal === 'create'"
-      @close="openModal = ''"
+      @close="handleCloseModal"
+      @refresh="getTodos()"
     />
     <DetailModal
       :isOpen="openModal === 'detail'"
       :id="detailId"
-      @close="openModal = '', detailId = ''"
+      @close="handleCloseModal"
     />
     <EditTodoModal
       :isOpen="openModal === 'edit'"
       :id="detailId"
-      @close="openModal = '', detailId = ''"
+      @close="handleCloseModal"
+      @refresh="getTodos()"
     />
   </div>
 </template>
@@ -35,12 +37,14 @@ import createTodoModal from '@/components/Modal/CreateModal.vue';
 import DetailModal from '@/components/Modal/DetailModal.vue';
 import EditTodoModal from '@/components/Modal/EditTodoModal.vue';
 
+
 const {
   todos,
   getTodos,
   getTodoById,
   createTodo,
-  editTodo
+  editTodo,
+  removeTodo
 } = useTodos()
 const openModal = ref('')
 const detailId = ref('')
@@ -49,6 +53,7 @@ onMounted(async ()=> await getTodos())
 provide('createTodo',createTodo)
 provide('getTodoById',getTodoById)
 provide('editTodo', editTodo)
+provide('removeTodo',removeTodo)
 
 function handleTodoDetail(id) {
   detailId.value = id
@@ -56,8 +61,22 @@ function handleTodoDetail(id) {
 }
 
 function handleTodoEdit(id) {
-    detailId.value = id
+  detailId.value = id
   openModal.value = 'edit'
+}
+
+async function handleCloseModal() {
+  openModal.value = ''
+  detailId.value = ''
+}
+
+async function handleDelete(id) {
+  try {
+    await removeTodo(id)
+    await getTodos()
+  } catch(err) {
+    console.log('delete err',err)
+  }
 }
 </script>
 <style scoped >

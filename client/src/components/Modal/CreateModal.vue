@@ -37,7 +37,7 @@ defineProps({
     default: false
   }
 })
-const emits = defineEmits(['close'])
+const emits = defineEmits(['close','refresh'])
 const newTodo = ref('')
 const time = ref('')
 const createTodo = inject('createTodo')
@@ -48,6 +48,8 @@ async function addNewTodo() {
       return
     }
     await createTodo(newTodo.value,time.value)
+    emits('close')
+    emits('refresh')
   } catch(err) {
     console.warn('addNewTodo err',err)
   }
